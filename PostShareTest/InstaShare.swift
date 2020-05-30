@@ -1,6 +1,7 @@
 import UIKit
 import Foundation
 import Photos
+import AssetsLibrary
 
 
 /*
@@ -36,32 +37,9 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
      let url = URL(string: "instagram://library?LocalIdentifier=" + videoLocalIdentifier)
      
      */
-    func postVideoToStory(){
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions)
-        if let lastAsset = fetchResult.firstObject {
-            let localIdentifier = lastAsset.localIdentifier
-            let u = "instagram://library?LocalIdentifier=" + localIdentifier
-            let url = NSURL(string: u)!
-            print(url)
-            if UIApplication.shared.canOpenURL(url as URL) {
-                UIApplication.shared.open(URL(string: u)!, options: [:], completionHandler: nil)
-            } else {
-                
-                let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(URL(string: urlStr)!, options: [:], completionHandler: nil)
-                    
-                } else {
-                    UIApplication.shared.openURL(URL(string: urlStr)!)
-                }
-            }
-            
-        }
-    }
-    
-    func postImageToInstaStoryA(sharingImageView:UIImage?,instagramCaption:String, view: UIView){
+   
+    //IMAGEEEE
+    func postImageToInstaStoryV2(sharingImageView:UIImage?,instagramCaption:String, view: UIView){
         if let storiesUrl = URL(string: "instagram-stories://share") {
             if UIApplication.shared.canOpenURL(storiesUrl) {
                 guard let image = sharingImageView else { return }
@@ -85,7 +63,7 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
         }
     }
     
-    func postImageToInstagramWithCaption(imageInstagram: UIImage, instagramCaption: String, view: UIView) {
+    func postImageToInstaStoryV1(imageInstagram: UIImage, instagramCaption: String, view: UIView) {
         // called to post image with caption to the instagram application
         
         let instagramURL = NSURL(string: kInstagramURL)
@@ -119,4 +97,55 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
         }
     }
     
+    
+    ///VIDEOOOOOOOOO
+    func shareVideoToInstagramV2(videoURL:URL,caption:String)
+    {
+        let videoURL : NSURL = videoURL as NSURL
+        
+        let library = ALAssetsLibrary()
+        library.writeVideoAtPath(toSavedPhotosAlbum: videoURL as URL) { (newURL, error) in
+            
+            let caption = "write your caption here..."
+            
+            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)&InstagramCaption=\((caption.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics))!)"
+            
+            let instagramURL = NSURL(string: instagramString)
+            
+            if UIApplication.shared.canOpenURL(instagramURL! as URL)
+            {
+                UIApplication.shared.openURL(instagramURL! as URL)
+            }
+            else
+            {
+                print("Instagram app not installed.")
+            }
+        }
+    }
+    
+    
+    func postVideoToStoryV1(){
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions)
+        if let lastAsset = fetchResult.firstObject {
+            let localIdentifier = lastAsset.localIdentifier
+            let u = "instagram://library?LocalIdentifier=" + localIdentifier
+            let url = NSURL(string: u)!
+            print(url)
+            if UIApplication.shared.canOpenURL(url as URL) {
+                UIApplication.shared.open(URL(string: u)!, options: [:], completionHandler: nil)
+            } else {
+                
+                let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(URL(string: urlStr)!, options: [:], completionHandler: nil)
+                    
+                } else {
+                    UIApplication.shared.openURL(URL(string: urlStr)!)
+                }
+            }
+            
+        }
+    }
 }

@@ -22,7 +22,8 @@ class ViewController: UIViewController {
     
     private var imagePicker:ImagePicker?;
     private let pickerController = UIImagePickerController();
-    
+    var choiceImage = true
+    var path:URL?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,20 +32,30 @@ class ViewController: UIViewController {
     }
 
     @IBAction func addImage(_ sender: UIButton) {
+        choiceImage = true
          self.imagePicker?.present(from: self.view)
         lblStatus.text = "You are going to share Image on post"
     }
     
     
     @IBAction func addVideo(_ sender: UIButton) {
+        choiceImage = false
          lblStatus.text = "You are going to share Video on post"
         openVideoPicker(sourceType: .camera)
     }
     
     @IBAction func btnInsta(_ sender: UIButton) {
         
-        
-        InstagramManager.sharedManager.postImageToInstaStoryA(sharingImageView: self.imgThumb.image, instagramCaption: txtV.text, view: self.view)
+        if choiceImage{
+            InstagramManager.sharedManager.postImageToInstaStoryV1(imageInstagram: self.imgThumb.image!, instagramCaption: txtV.text, view: self.view)
+        }else {
+            guard (path != nil) else {
+                self.lblStatus.text = "Hey video path is nil"
+                return 
+            }
+            InstagramManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
+        }
+       
         
     }
 }
@@ -104,7 +115,7 @@ extension ViewController:AVPlayerViewControllerDelegate,UIImagePickerControllerD
         if urlOfVideo != nil
         {
             let videoPath = urlOfVideo as URL?
-            
+            path = videoPath
             
             // print(mypath!)
             print("we found a video url.. \(videoPath)")
@@ -126,7 +137,7 @@ extension ViewController:AVPlayerViewControllerDelegate,UIImagePickerControllerD
                 
                 print("Thumbnail image \(thumbnail)")
                 self.imgThumb.image = thumbnail
-                InstagramManager.sharedManager.postVideoToStory()
+               
                 
             }
             catch let error

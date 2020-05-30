@@ -25,6 +25,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>${PRODUCT_NAME} Microphone Usage</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to use Camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
