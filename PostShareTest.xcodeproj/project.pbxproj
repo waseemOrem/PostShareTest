@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		844BE65824824C41008A1440 /* InstaShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BE65724824C41008A1440 /* InstaShare.swift */; };
+		844BE65A24824C60008A1440 /* ImgePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BE65924824C60008A1440 /* ImgePicker.swift */; };
 		84707DDB2482384E00304E55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84707DDA2482384E00304E55 /* AppDelegate.swift */; };
 		84707DDD2482384E00304E55 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84707DDC2482384E00304E55 /* ViewController.swift */; };
 		84707DE02482384E00304E55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84707DDE2482384E00304E55 /* Main.storyboard */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		844BE65724824C41008A1440 /* InstaShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstaShare.swift; sourceTree = "<group>"; };
+		844BE65924824C60008A1440 /* ImgePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgePicker.swift; sourceTree = "<group>"; };
 		84707DD72482384E00304E55 /* PostShareTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PostShareTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84707DDA2482384E00304E55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84707DDC2482384E00304E55 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				84707DE62482385000304E55 /* LaunchScreen.storyboard */,
 				84707DE92482385000304E55 /* Info.plist */,
 				84707DE12482384E00304E55 /* PostShareTest.xcdatamodeld */,
+				844BE65724824C41008A1440 /* InstaShare.swift */,
+				844BE65924824C60008A1440 /* ImgePicker.swift */,
 			);
 			path = PostShareTest;
 			sourceTree = "<group>";
@@ -259,7 +265,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				844BE65A24824C60008A1440 /* ImgePicker.swift in Sources */,
 				84707DDD2482384E00304E55 /* ViewController.swift in Sources */,
+				844BE65824824C41008A1440 /* InstaShare.swift in Sources */,
 				84707DE32482384E00304E55 /* PostShareTest.xcdatamodeld in Sources */,
 				84707DDB2482384E00304E55 /* AppDelegate.swift in Sources */,
 			);
@@ -436,14 +444,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RCDVBDTE8;
 				INFOPLIST_FILE = PostShareTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orem.PostShareTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orem.SpotPraise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -453,14 +464,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RCDVBDTE8;
 				INFOPLIST_FILE = PostShareTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orem.PostShareTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orem.SpotPraise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
