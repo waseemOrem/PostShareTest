@@ -3,21 +3,7 @@ import Foundation
 import Photos
 import AssetsLibrary
 
-
-/*
- You can pass the following content to the Instagram app:
- 
- Content    File Types    Description
- Image asset
- JPEG, GIF, or PNG
- -
- File asset
- MKV, MP4
- Minimum duration: 3 seconds Maximum duration: 10 minutes Minimum dimentions: 640x640 pixels
- 
- */
-class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
-    
+class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
     private let kInstagramURL = "instagram://app"
     private let kUTI = "com.instagram.exclusivegram"
     private let kfileNameExtension = "instagram.igo"
@@ -27,9 +13,9 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
     var documentInteractionController = UIDocumentInteractionController()
     
     // singleton manager
-    class var sharedManager: InstagramManager {
+    class var sharedManager: SocialPostManager {
         struct Singleton {
-            static let instance = InstagramManager()
+            static let instance = SocialPostManager()
         }
         return Singleton.instance
     }
@@ -37,7 +23,7 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
      let url = URL(string: "instagram://library?LocalIdentifier=" + videoLocalIdentifier)
      
      */
-   
+    //MARK: -Instagram SHARING
     //IMAGEEEE
     func postImageToInstaStoryV2(sharingImageView:UIImage?,instagramCaption:String, view: UIView){
         if let storiesUrl = URL(string: "instagram-stories://share") {
@@ -107,17 +93,25 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
         library.writeVideoAtPath(toSavedPhotosAlbum: videoURL as URL) { (newURL, error) in
             
             let caption = "write your caption here..."
+            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)"
             
-            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)&InstagramCaption=\((caption.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics))!)"
+//            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)&InstagramCaption=\((caption.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics))!)"
             
-            let instagramURL = NSURL(string: instagramString)
+           // let instagramURL = NSURL(string: instagramString)
+            let shareString = "https://itunes.apple.com/in/app/\(instagramString)"
+            // let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
+            // encode a space to %20 for example
+            let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             
-            if UIApplication.shared.canOpenURL(instagramURL! as URL)
+            // cast to an url
+            let url = URL(string: escapedShareString)
+            print(url)
+            if UIApplication.shared.canOpenURL(url! as URL)
             {
-                UIApplication.shared.openURL(instagramURL! as URL)
+                UIApplication.shared.openURL(url! as URL)
             }
             else
-            {
+            {  UIApplication.shared.openURL(url! as URL)
                 print("Instagram app not installed.")
             }
         }
@@ -133,8 +127,11 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
             let u = "instagram://library?LocalIdentifier=" + localIdentifier
             let url = NSURL(string: u)!
             print(url)
+            
             if UIApplication.shared.canOpenURL(url as URL) {
-                UIApplication.shared.open(URL(string: u)!, options: [:], completionHandler: nil)
+                UIApplication.shared.openURL(url as URL)
+                
+              //  UIApplication.shared.open(URL(string: u)!, options: [:], completionHandler: nil)
             } else {
                 
                 let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
@@ -148,4 +145,37 @@ class InstagramManager: NSObject, UIDocumentInteractionControllerDelegate {
             
         }
     }
+    
+     //MARK: -Instagram SHARING End
+    
+    //MARK: -Twitter SHARING
+    
+    
+    func shareTextWithImageOnTwitter(captionText:String,tweetURL:String){
+        let tweetText = captionText
+        let tweetUrl = ""
+        let kAlertViewTitle = "Error"
+        let kAlertViewMessage = "Please install the twittwer application"
+        
+        let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)"
+        
+        // encode a space to %20 for example
+        let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        
+        // cast to an url
+        let url = URL(string: escapedShareString)
+        
+        // open in safari
+        
+        if UIApplication.shared.canOpenURL(url! as URL) {
+            UIApplication.shared.openURL(url!)
+            
+        }else {
+            UIAlertView(title: kAlertViewTitle, message: kAlertViewMessage, delegate:nil, cancelButtonTitle:"Ok").show()
+            
+        }
+        
+    }
+    
+     //MARK: -Twitter SHARING End
 }

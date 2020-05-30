@@ -67,6 +67,17 @@
                                     <action selector="btnInsta:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3oD-0f-FRZ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUs-Rb-bI7">
+                                <rect key="frame" x="152" y="305" width="100" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="eVW-Ni-scj"/>
+                                </constraints>
+                                <state key="normal" title="Post to Twitter"/>
+                                <connections>
+                                    <action selector="btnInsta:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QbJ-Lz-mRP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -81,12 +92,14 @@
                             <constraint firstItem="YwW-zo-7vq" firstAttribute="leading" secondItem="zpP-Wk-94D" secondAttribute="leading" id="SWZ-Tk-RdV"/>
                             <constraint firstItem="YwW-zo-7vq" firstAttribute="trailing" secondItem="zpP-Wk-94D" secondAttribute="trailing" id="Tgt-gR-1OJ"/>
                             <constraint firstItem="Qav-tS-Khv" firstAttribute="top" secondItem="zpP-Wk-94D" secondAttribute="bottom" constant="4" id="aqj-sM-0Dj"/>
+                            <constraint firstItem="aUs-Rb-bI7" firstAttribute="leading" secondItem="0tN-97-lQk" secondAttribute="trailing" constant="32" id="d0R-BV-xpT"/>
                             <constraint firstItem="zpP-Wk-94D" firstAttribute="top" secondItem="wMD-yK-hjj" secondAttribute="bottom" constant="10" id="dvC-R0-r24"/>
                             <constraint firstItem="YwW-zo-7vq" firstAttribute="top" secondItem="Qav-tS-Khv" secondAttribute="bottom" id="e4N-dV-K93"/>
                             <constraint firstItem="zpP-Wk-94D" firstAttribute="trailing" secondItem="3xd-wc-hEU" secondAttribute="trailing" id="emz-JU-at3"/>
                             <constraint firstItem="zpP-Wk-94D" firstAttribute="leading" secondItem="wMD-yK-hjj" secondAttribute="leading" id="gCC-O9-tuN"/>
                             <constraint firstItem="3xd-wc-hEU" firstAttribute="top" secondItem="wMD-yK-hjj" secondAttribute="top" id="l6h-bU-ghg"/>
                             <constraint firstItem="0tN-97-lQk" firstAttribute="top" secondItem="YwW-zo-7vq" secondAttribute="bottom" constant="10" id="mCj-e1-RFk"/>
+                            <constraint firstItem="aUs-Rb-bI7" firstAttribute="top" secondItem="0tN-97-lQk" secondAttribute="top" id="y41-kp-tAi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

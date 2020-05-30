@@ -41,20 +41,33 @@ class ViewController: UIViewController {
     @IBAction func addVideo(_ sender: UIButton) {
         choiceImage = false
          lblStatus.text = "You are going to share Video on post"
-        openVideoPicker(sourceType: .camera)
+        openVideoPicker(sourceType: .photoLibrary)
     }
     
     @IBAction func btnInsta(_ sender: UIButton) {
-        
-        if choiceImage{
-            InstagramManager.sharedManager.postImageToInstaStoryV1(imageInstagram: self.imgThumb.image!, instagramCaption: txtV.text, view: self.view)
-        }else {
-            guard (path != nil) else {
-                self.lblStatus.text = "Hey video path is nil"
-                return 
+        if sender.tag == 0 {
+            if choiceImage{
+                SocialPostManager.sharedManager.postImageToInstaStoryV1(imageInstagram: self.imgThumb.image!, instagramCaption: txtV.text, view: self.view)
+            }else {
+                guard (path != nil) else {
+                    self.lblStatus.text = "Hey video path is nil"
+                    return
+                }
+                SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
             }
-            InstagramManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
         }
+        else if sender.tag == 1 {
+            if choiceImage{
+                SocialPostManager.sharedManager.shareTextWithImageOnTwitter(captionText: txtV.text, tweetURL: "")
+            }else {
+                guard (path != nil) else {
+                    self.lblStatus.text = "Hey video path is nil"
+                    return
+                }
+               // SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
+            }
+        }
+        
        
         
     }
