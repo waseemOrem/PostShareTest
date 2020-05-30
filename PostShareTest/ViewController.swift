@@ -38,6 +38,7 @@ class ViewController: UIViewController {
     
     @IBAction func addVideo(_ sender: UIButton) {
          lblStatus.text = "You are going to share Video on post"
+        openVideoPicker(sourceType: .camera)
     }
     
     @IBAction func btnInsta(_ sender: UIButton) {
