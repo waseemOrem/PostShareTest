@@ -1,0 +1,6 @@
+framework module Pods_PostShareTestTests {
+  umbrella header "Pods-PostShareTestTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
