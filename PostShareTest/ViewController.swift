@@ -14,6 +14,8 @@ import MobileCoreServices
 import MobileCoreServices
 import AssetsLibrary
 
+import TwitterKit
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var txtV: UITextView?
@@ -27,6 +29,9 @@ class ViewController: UIViewController {
     var videoDataIs:NSData?
     var imgDataIs:NSData?
     
+    private var store: TWTRSessionStore {
+        return TWTRTwitter.sharedInstance().sessionStore
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,22 +69,93 @@ class ViewController: UIViewController {
             }
         }
         else if sender.tag == 1 {
-            if choiceImage{
+            
+            login(completion: {  [weak self] ifTrue, _ in
                 
-              
-                
-                //SocialPostManager.sharedManager.shareTextWithImageOnTwitter(captionText: txtV.text, tweetURL: "")
-            }else {
-                guard (path != nil) else {
-                    self.lblStatus?.text = "Hey video path is nil"
-                    return
+                if ifTrue{
+                    if (self?.choiceImage)!{
+                        self!.uploadImageOnTwitter(withText: "twitter test ", image: (self?.imgThumb?.image)!)
+                    }else {
+                        guard (self?.path != nil) else {
+                            self?.lblStatus?.text = "Hey video path is nil"
+                            return
+                        }
+                        self!.uploadVideoOnTwitter(withText: "twitter video test", videoData: self?.videoDataIs as! Data)
+                        // SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
+                    }
                 }
-               // SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
+                
+            })
+           
+        }
+          }
+    
+    
+    
+    //MARK: -Twitter SHARING
+    
+    func uploadImageOnTwitter(withText text: String, image: UIImage) {
+        guard let userId = store.session()?.userID else { return }
+        let client = TWTRAPIClient.init(userID: userId)
+        client.sendTweet(withText: text, image: image) {
+            (tweet, error) in
+            
+            if (error != nil) {
+                // Handle error
+                print(error?.localizedDescription)
+                
+            } else {
+                // Handle Success
+                print(tweet)
             }
         }
+    }
+    
+    
+    func uploadVideoOnTwitter(withText text: String, videoData: Data?) {
+        guard let userId = store.session()?.userID else { return }
+        let client = TWTRAPIClient.init(userID: userId)
+        // Get data from Url
+//        guard let videoData = Data(contentsOf: videoUrl) else {
+//            // Handle if data is nil
+//            return
+//        }
         
-       
-        
+        guard   videoData != nil else {
+            // Handle if data is nil
+            return
+        }
+        client.sendTweet(withText: text, videoData: videoData!) {
+            (tweet, error) in
+            
+            if (error != nil) {
+                // Handle error
+                print(error?.localizedDescription)
+                
+            } else {
+                // Handle Success
+                print(tweet)
+            }
+        }
+    }
+    
+    func login(completion: @escaping (Bool, String?) -> Void) {
+        TWTRTwitter.sharedInstance().logIn(completion: { (session, error) in
+            if session != nil {
+                print("\(String(describing: session?.userName))")
+                completion(true, nil)
+            } else {
+                let message = error?.localizedDescription
+                completion(false, message)
+                print("error: " + (message ?? ""))
+            }
+        })
+    }
+    
+    func logout() {
+        for case let session as TWTRSession in store.existingUserSessions() {
+            store.logOutUserID(session.userID)
+        }
     }
 }
 

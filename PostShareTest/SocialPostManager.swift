@@ -2,6 +2,8 @@ import UIKit
 import Foundation
 import Photos
 import AssetsLibrary
+import TwitterKit
+
 
 class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
     private let kInstagramURL = "instagram://app"
@@ -136,33 +138,23 @@ class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
      //MARK: -Instagram SHARING End
     
     //MARK: -Twitter SHARING
-    
-    
-    func shareTextWithImageOnTwitter(captionText:String,tweetURL:String){
-        let tweetText = captionText
-        let tweetUrl = ""
-        let kAlertViewTitle = "Error"
-        let kAlertViewMessage = "Please install the twittwer application"
-        
-        let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)"
-        
-        // encode a space to %20 for example
-        let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        
-        // cast to an url
-        let url = URL(string: escapedShareString)
-        
-        // open in safari
-        
-        if UIApplication.shared.canOpenURL(url! as URL) {
-            UIApplication.shared.openURL(url!)
-            
-        }else {
-            UIAlertView(title: kAlertViewTitle, message: kAlertViewMessage, delegate:nil, cancelButtonTitle:"Ok").show()
-            
-        }
-        
-    }
+
+//func uploadImageOnTwitter(withText text: String, image: UIImage) {
+//    guard let userId = store.session()?.userID else { return }
+//    let client = TWTRAPIClient.init(userID: userId)
+//    client.sendTweet(withText: text, image: image) {
+//        (tweet, error) in
+//        
+//        if error {
+//            // Handle error
+//            print(error?.localizedDescription)
+//            
+//        } else {
+//            // Handle Success
+//            print(tweet)
+//        }
+//    }
+//}
     
      //MARK: -Twitter SHARING End
 
