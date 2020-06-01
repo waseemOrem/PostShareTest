@@ -25,6 +25,7 @@ class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
      */
     //MARK: -Instagram SHARING
     //IMAGEEEE
+    //https://developers.facebook.com/docs/instagram/sharing-to-stories/
     func postImageToInstaStoryV2(sharingImageView:UIImage?,instagramCaption:String, view: UIView){
         if let storiesUrl = URL(string: "instagram-stories://share") {
             if UIApplication.shared.canOpenURL(storiesUrl) {
@@ -73,6 +74,7 @@ class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
             documentInteractionController.uti = kUTI
             
             // adding caption for the image
+            //com.instagram.sharedSticker.backgroundVideo
             documentInteractionController.annotation = ["InstagramCaption": instagramCaption]
             
             documentInteractionController.presentOpenInMenu(from: rect, in: view, animated: true)
@@ -85,66 +87,51 @@ class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
     
     
     ///VIDEOOOOOOOOO
-    func shareVideoToInstagramV2(videoURL:URL,caption:String)
+    func shareVideoToInstagramV2(videoData:NSData?,imageData:NSData?,caption:String?)
     {
-        let videoURL : NSURL = videoURL as NSURL
+       // let videoURL : NSURL = videoURL as NSURL
         
-        let library = ALAssetsLibrary()
-        library.writeVideoAtPath(toSavedPhotosAlbum: videoURL as URL) { (newURL, error) in
+      //  let library = ALAssetsLibrary()
+       // library.writeVideoAtPath(toSavedPhotosAlbum: videoURL as URL) { (newURL, error) in
             
-            let caption = "write your caption here..."
-            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)"
-            
-//            let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)&InstagramCaption=\((caption.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics))!)"
-            
-           // let instagramURL = NSURL(string: instagramString)
-            let shareString = "https://itunes.apple.com/in/app/\(instagramString)"
-            // let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
-            // encode a space to %20 for example
-            let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+         //   let caption = "write your caption here..."
+           // let instagramString = "instagram://library?AssetPath=\((newURL!.absoluteString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics))!)"
+          
+            //let shareString = "https://itunes.apple.com/in/app/\(instagramString)"
+             //let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             
             // cast to an url
-            let url = URL(string: escapedShareString)
-            print(url)
-            if UIApplication.shared.canOpenURL(url! as URL)
-            {
-                UIApplication.shared.openURL(url! as URL)
-            }
-            else
-            {  UIApplication.shared.openURL(url! as URL)
-                print("Instagram app not installed.")
-            }
-        }
-    }
-    
-    
-    func postVideoToStoryV1(){
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions)
-        if let lastAsset = fetchResult.firstObject {
-            let localIdentifier = lastAsset.localIdentifier
-            let u = "instagram://library?LocalIdentifier=" + localIdentifier
-            let url = NSURL(string: u)!
-            print(url)
-            
-            if UIApplication.shared.canOpenURL(url as URL) {
-                UIApplication.shared.openURL(url as URL)
-                
-              //  UIApplication.shared.open(URL(string: u)!, options: [:], completionHandler: nil)
-            } else {
-                
-                let urlStr = "https://itunes.apple.com/in/app/instagram/id389801252?mt=8"
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(URL(string: urlStr)!, options: [:], completionHandler: nil)
+            //let url = URL(string: escapedShareString)
+            //print(url)
+           
+            if let storiesUrl = URL(string: "instagram-stories://share") {
+                if UIApplication.shared.canOpenURL(storiesUrl) {
+                   // guard let image = sharingImageView else { return }
+                    guard let _imageData = imageData else { return }
+                     guard let _videoData = videoData else { return }
                     
+                    let pasteboardItems: [String: Any] = [
+                        "com.instagram.sharedSticker.backgroundVideo":_videoData, "com.instagram.sharedSticker.InstagramCaption":caption!,
+                        "com.instagram.sharedSticker.stickerImage": _imageData,
+                        "com.instagram.sharedSticker.backgroundTopColor": "#636e72",
+                        "com.instagram.sharedSticker.backgroundBottomColor": "#b2bec3"
+                    ]
+                    let pasteboardOptions = [
+                        UIPasteboard.OptionsKey.expirationDate: Date().addingTimeInterval(300)
+                    ]
+                    UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
+                    UIApplication.shared.open(storiesUrl, options: [:], completionHandler: nil)
                 } else {
-                    UIApplication.shared.openURL(URL(string: urlStr)!)
+                    
+                    UIAlertView(title: kAlertViewTitle, message: kAlertViewMessage, delegate:nil, cancelButtonTitle:"Ok").show()
+                    // print("User doesn't have instagram on their device.")
                 }
             }
-            
         }
     }
+    
+    
+    
     
      //MARK: -Instagram SHARING End
     
@@ -178,4 +165,4 @@ class SocialPostManager: NSObject, UIDocumentInteractionControllerDelegate {
     }
     
      //MARK: -Twitter SHARING End
-}
+

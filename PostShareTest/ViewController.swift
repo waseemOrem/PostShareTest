@@ -16,14 +16,18 @@ import AssetsLibrary
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var txtV: UITextView!
-    @IBOutlet weak var lblStatus: UILabel!
-    @IBOutlet weak var imgThumb: UIImageView!
+    @IBOutlet weak var txtV: UITextView?
+    @IBOutlet weak var lblStatus: UILabel?
+    @IBOutlet weak var imgThumb: UIImageView?
     
     private var imagePicker:ImagePicker?;
     private let pickerController = UIImagePickerController();
     var choiceImage = true
     var path:URL?
+    var videoDataIs:NSData?
+    var imgDataIs:NSData?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,34 +38,40 @@ class ViewController: UIViewController {
     @IBAction func addImage(_ sender: UIButton) {
         choiceImage = true
          self.imagePicker?.present(from: self.view)
-        lblStatus.text = "You are going to share Image on post"
+    lblStatus?.textColor = .white
+        lblStatus?.text = "You are going to share Image on post"
     }
     
     
     @IBAction func addVideo(_ sender: UIButton) {
         choiceImage = false
-         lblStatus.text = "You are going to share Video on post"
+         lblStatus?.textColor = .white
+         lblStatus?.text = "You are going to share Video on post"
         openVideoPicker(sourceType: .photoLibrary)
     }
     
     @IBAction func btnInsta(_ sender: UIButton) {
         if sender.tag == 0 {
             if choiceImage{
-                SocialPostManager.sharedManager.postImageToInstaStoryV1(imageInstagram: self.imgThumb.image!, instagramCaption: txtV.text, view: self.view)
+                SocialPostManager.sharedManager.postImageToInstaStoryV2(sharingImageView: self.imgThumb?.image, instagramCaption: "heloo test Caption", view: self.view)
+              //  SocialPostManager.sharedManager.postImageToInstaStoryV1(imageInstagram: self.imgThumb.image!, instagramCaption: txtV.text, view: self.view)
             }else {
-                guard (path != nil) else {
-                    self.lblStatus.text = "Hey video path is nil"
-                    return
-                }
-                SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
+//                guard (path != nil) else {
+//                    self.lblStatus.text = "Hey video path is nil"
+//                    return
+//                }
+               SocialPostManager.sharedManager.shareVideoToInstagramV2(videoData: self.videoDataIs, imageData: self.imgDataIs, caption: "Hello test caption")
             }
         }
         else if sender.tag == 1 {
             if choiceImage{
-                SocialPostManager.sharedManager.shareTextWithImageOnTwitter(captionText: txtV.text, tweetURL: "")
+                
+              
+                
+                //SocialPostManager.sharedManager.shareTextWithImageOnTwitter(captionText: txtV.text, tweetURL: "")
             }else {
                 guard (path != nil) else {
-                    self.lblStatus.text = "Hey video path is nil"
+                    self.lblStatus?.text = "Hey video path is nil"
                     return
                 }
                // SocialPostManager.sharedManager.shareVideoToInstagramV2(videoURL: path!, caption: txtV.text)
@@ -110,7 +120,12 @@ extension ViewController:AVPlayerViewControllerDelegate,UIImagePickerControllerD
         }
         
         // *** load video data from URL *** //
-       // guard  let videoData = NSData(contentsOf: videoURL) else {return}
+        guard  let videoData = NSData(contentsOf: videoURL) else {
+            self.lblStatus?.text = "Unable to get video data "
+            self.lblStatus?.textColor = .red
+            return}
+        
+        self.videoDataIs = videoData
         
         // *** Get documents directory path *** //
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
@@ -119,7 +134,7 @@ extension ViewController:AVPlayerViewControllerDelegate,UIImagePickerControllerD
         // let dataPath = FileManager.default .stringByAppendingPathComponent("/videoFileName.mp4")
         
         // *** Write video file data to path *** //
-        //  videoData?.writeToFile(dataPath, atomically: false)
+         // videoData?.writeToFile(dataPath, atomically: false)
         
         print("we found a video url.. \(paths)")
        // var _videoData = [SocialPostDataDictKEYS:Any]()
@@ -149,7 +164,14 @@ extension ViewController:AVPlayerViewControllerDelegate,UIImagePickerControllerD
                 let  thumbnail = UIImage(cgImage: cgImage)
                 
                 print("Thumbnail image \(thumbnail)")
-                self.imgThumb.image = thumbnail
+                self.imgThumb?.image = thumbnail
+                
+                guard let imageData =  self.imgThumb?.image?.pngData() else {
+                    self.lblStatus?.text = "Unable to get video data "
+                    self.lblStatus?.textColor = .red
+                    return }
+                
+                self.imgDataIs = imageData as NSData
                
                 
             }
